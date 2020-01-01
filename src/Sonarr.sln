@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sonarr.Console", "NzbDrone.Console\Sonarr.Console.csproj", "{3DCA7B58-B8B3-49AC-9D9E-56F4A0460976}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -317,8 +317,8 @@ Global
 		{C0EA1A40-91AD-4EEB-BD16-2DDDEBD20AE5} = {57A04B72-8088-4F75-A582-1158CF8291F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35
 		SolutionGuid = {2955716E-0882-41EC-935D-C95694C5C30F}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NzbDrone.Console\NzbDrone.Console.csproj

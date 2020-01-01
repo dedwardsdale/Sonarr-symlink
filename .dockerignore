@@ -1,0 +1,14 @@
+.git/
+frontend/
+src/
+.github/
+_temp/
+_tests/
+docker/
+distribution/
+Logo/
+macOS/
+node_modules/
+schemas/
+setup/
+tools/
