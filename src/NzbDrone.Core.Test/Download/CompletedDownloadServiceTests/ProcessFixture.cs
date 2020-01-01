@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             _trackedDownload.DownloadItem.Status = status;
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertNotReadyToImport();
         }
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             _trackedDownload.DownloadItem.Category = null;
             GivenNoGrabbedHistory();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertNotReadyToImport();
         }
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             GivenNoGrabbedHistory();
             GivenSeriesMatch();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertReadyToImport();
         }
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             _trackedDownload.DownloadItem.OutputPath = new OsPath();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertNotReadyToImport();
         }
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.MostRecentForDownloadId(It.Is<string>(i => i == "1234")));
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertNotReadyToImport();
         }
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                   .Setup(s => s.GetSeries("Drone.S01E01.HDTV"))
                   .Returns((Series)null);
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertNotReadyToImport();
         }

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Download
 {
     public interface ICompletedDownloadService
     {
-        void Process(TrackedDownload trackedDownload);
+        void Check(TrackedDownload trackedDownload);
         void Import(TrackedDownload trackedDownload);
     }
 
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Download
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
         }
 
-        public void Process(TrackedDownload trackedDownload)
+        public void Check(TrackedDownload trackedDownload)
         {
             if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed)
             {

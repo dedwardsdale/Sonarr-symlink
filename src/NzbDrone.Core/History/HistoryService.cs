@@ -305,6 +305,8 @@ namespace NzbDrone.Core.History
 
         public void Handle(DownloadIgnoredEvent message)
         {
+            var historyToAdd = new List<History>();
+
             foreach (var episodeId in message.EpisodeIds)
             {
                 var history = new History
@@ -322,8 +324,10 @@ namespace NzbDrone.Core.History
                 history.Data.Add("DownloadClient", message.DownloadClient);
                 history.Data.Add("Message", message.Message);
 
-                _historyRepository.Insert(history);
+                historyToAdd.Add(history);
             }
+
+            _historyRepository.InsertMany(historyToAdd);
         }
 
         public void Handle(SeriesDeletedEvent message)

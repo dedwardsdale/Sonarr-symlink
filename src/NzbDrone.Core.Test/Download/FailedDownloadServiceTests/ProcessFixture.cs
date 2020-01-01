@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
         {
             GivenNoGrabbedHistory();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             AssertDownloadNotFailed();
         }
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
             GivenNoGrabbedHistory();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             _trackedDownload.StatusMessages.Should().NotBeEmpty();
         }
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
             GivenNoGrabbedHistory();
 
-            Subject.Process(_trackedDownload);
+            Subject.Check(_trackedDownload);
 
             _trackedDownload.StatusMessages.Should().NotBeEmpty();
         }

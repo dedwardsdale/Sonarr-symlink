@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     public class DownloadMonitoringService : IExecute<RefreshMonitoredDownloadsCommand>,
                                              IHandle<EpisodeGrabbedEvent>,
                                              IHandle<EpisodeImportedEvent>,
-                                             IHandle<DownloadsProcesseEvent>,
+                                             IHandle<DownloadsProcessedEvent>,
                                              IHandle<TrackedDownloadsRemovedEvent>
     {
         private readonly IDownloadClientStatusService _downloadClientStatusService;
@@ -117,8 +117,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 var trackedDownload = _trackedDownloadService.TrackDownload((DownloadClientDefinition)downloadClient.Definition, downloadItem);
                 if (trackedDownload != null && trackedDownload.State == TrackedDownloadState.Downloading)
                 {
-                    _failedDownloadService.Process(trackedDownload);
-                    _completedDownloadService.Process(trackedDownload);
+                    _failedDownloadService.Check(trackedDownload);
+                    _completedDownloadService.Check(trackedDownload);
                 }
 
                 return trackedDownload;
@@ -157,7 +157,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public void Execute(CheckForFinishedDownloadCommand message)
         {
-            _logger.Warn("CheckForFinishedDownload is deprecated, use RefreshMonitoredDownloads instead");
+            _logger.Warn("A third party app used the deprecated CheckForFinishedDownload command, it should be updated RefreshMonitoredDownloads instead");
             Refresh();
         }
 
@@ -171,7 +171,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             _refreshDebounce.Execute();
         }
 
-        public void Handle(DownloadsProcesseEvent message)
+        public void Handle(DownloadsProcessedEvent message)
         {
             var trackedDownloads = _trackedDownloadService.GetTrackedDownloads().Where(t => t.IsTrackable && DownloadIsTrackable(t)).ToList();
 

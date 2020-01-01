@@ -2,9 +2,9 @@
 
 namespace NzbDrone.Core.Download
 {
-    public class DownloadsProcesseEvent : IEvent
+    public class DownloadsProcessedEvent : IEvent
     {
-        public DownloadsProcesseEvent()
+        public DownloadsProcessedEvent()
         {
         }
     }

@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Download
     {
         void MarkAsFailed(int historyId);
         void MarkAsFailed(string downloadId);
-        void Process(TrackedDownload trackedDownload);
+        void Check(TrackedDownload trackedDownload);
         void ProcessFailed(TrackedDownload trackedDownload);
     }
 
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Download
             }
         }
 
-        public void Process(TrackedDownload trackedDownload)
+        public void Check(TrackedDownload trackedDownload)
         {
             // Only process tracked downloads that are still downloading
             if (trackedDownload.State != TrackedDownloadState.Downloading)

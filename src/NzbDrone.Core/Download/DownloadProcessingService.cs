@@ -54,13 +54,13 @@ namespace NzbDrone.Core.Download
                 }
             }
 
-            if (_configService.EnableCompletedDownloadHandling && _configService.RemoveCompletedDownloads)
+            if (enableCompletedDownloadHandling && _configService.RemoveCompletedDownloads)
             {
                 // Remove tracked downloads that are now complete
                 RemoveCompletedDownloads(trackedDownloads);
             }
 
-            _eventAggregator.PublishEvent(new DownloadsProcesseEvent());
+            _eventAggregator.PublishEvent(new DownloadsProcessedEvent());
         }
     }
 }

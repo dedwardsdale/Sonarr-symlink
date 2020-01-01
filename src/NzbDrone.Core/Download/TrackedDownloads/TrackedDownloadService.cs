@@ -110,6 +110,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var firstHistoryItem = historyItems.First();
                     var state = GetStateFromHistory(firstHistoryItem.EventType);
 
+                    // One potential issue here is if the latest is imported, but other episodes are ignored or never imported.
+                    // It's unlikely that will happen, but could happen if additional episodes are added to season after it's already imported.
+                    
                     if (state == TrackedDownloadState.Imported)
                     {
                         var allImported = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);

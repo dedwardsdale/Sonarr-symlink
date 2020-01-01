@@ -44,7 +44,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 var languageProfile = subject.Series.LanguageProfile.Value;
 
                 // If the item has already failed ignore it, it'll be cleaned up automatically later.
-                // To avoid a race make it's it's not FailedPending (failed awaiting removal/search)
+                // To avoid a race make sure it's not FailedPending (failed awaiting removal/search)
                 // or Failed (removed/searching) though the latter should be removed automatically.
 
                 if (queueItem.TrackedDownloadState == TrackedDownloadState.FailedPending ||

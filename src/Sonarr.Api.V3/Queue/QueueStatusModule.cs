@@ -48,10 +48,10 @@ namespace Sonarr.Api.V3.Queue
                 TotalCount = queue.Count + pending.Count,
                 Count = queue.Count(q => q.Series != null) + pending.Count,
                 UnknownCount = queue.Count(q => q.Series == null),
-                Errors = queue.Any(q => q.Series != null && q.TrackedDownloadStatus.HasValue && q.TrackedDownloadStatus.Value == TrackedDownloadStatus.Error),
-                Warnings = queue.Any(q => q.Series != null && q.TrackedDownloadStatus.HasValue && q.TrackedDownloadStatus.Value == TrackedDownloadStatus.Warning),
-                UnknownErrors = queue.Any(q => q.Series == null && q.TrackedDownloadStatus.HasValue && q.TrackedDownloadStatus.Value == TrackedDownloadStatus.Error),
-                UnknownWarnings = queue.Any(q => q.Series == null && q.TrackedDownloadStatus.HasValue && q.TrackedDownloadStatus.Value == TrackedDownloadStatus.Warning)
+                Errors = queue.Any(q => q.Series != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                Warnings = queue.Any(q => q.Series != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning),
+                UnknownErrors = queue.Any(q => q.Series == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                UnknownWarnings = queue.Any(q => q.Series == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning)
             };
 
             _broadcastDebounce.Resume();
