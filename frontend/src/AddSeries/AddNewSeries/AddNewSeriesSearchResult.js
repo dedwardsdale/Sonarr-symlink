@@ -58,6 +58,7 @@ class AddNewSeriesSearchResult extends Component {
       statistics,
       ratings,
       folder,
+      seriesType,
       images,
       isExistingSeries,
       isSmallScreen
@@ -165,6 +166,17 @@ class AddNewSeriesSearchResult extends Component {
                   </Label> :
                   null
               }
+
+              {
+                status === 'upcoming' ?
+                  <Label
+                    kind={kinds.INFO}
+                    size={sizes.LARGE}
+                  >
+                  Upcoming
+                  </Label> :
+                  null
+              }
             </div>
 
             <div className={styles.overview}>
@@ -180,6 +192,7 @@ class AddNewSeriesSearchResult extends Component {
           year={year}
           overview={overview}
           folder={folder}
+          initialSeriesType={seriesType}
           images={images}
           onModalClose={this.onAddSeriesModalClose}
         />
@@ -199,6 +212,7 @@ AddNewSeriesSearchResult.propTypes = {
   statistics: PropTypes.object.isRequired,
   ratings: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,
+  seriesType: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingSeries: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired

@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.DataAugmentation.DailySeries;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
@@ -19,14 +20,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
         private readonly ISeriesService _seriesService;
+        private readonly IDailySeriesService _dailySeriesService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ISeriesService seriesService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient,
+                            ISonarrCloudRequestBuilder requestBuilder,
+                            ISeriesService seriesService,
+                            IDailySeriesService dailySeriesService,
+                            Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _logger = logger;
             _seriesService = seriesService;
+            _dailySeriesService = dailySeriesService;
             _requestBuilder = requestBuilder.SkyHookTvdb;
         }
 
@@ -100,7 +107,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
 
-                return httpResponse.Resource.SelectList(MapSearhResult);
+                return httpResponse.Resource.SelectList(MapSearchResult);
             }
             catch (HttpException)
             {
@@ -113,7 +120,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private Series MapSearhResult(ShowResource show)
+        private Series MapSearchResult(ShowResource show)
         {
             var series = _seriesService.FindByTvdbId(show.TvdbId);
 
@@ -127,8 +134,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private Series MapSeries(ShowResource show)
         {
-
-
             var series = new Series();
             series.TvdbId = show.TvdbId;
 
@@ -176,7 +181,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 series.Certification = show.ContentRating.ToUpper();
             }
-            
+
+            if (_dailySeriesService.IsDailySeries(series.TvdbId))
+            {
+                series.SeriesType = SeriesTypes.Daily;
+            }
+
             series.Actors = show.Actors.Select(MapActors).ToList();
             series.Seasons = show.Seasons.Select(MapSeason).ToList();
             series.Images = show.Images.Select(MapImage).ToList();
@@ -212,6 +222,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             episode.EpisodeNumber = oracleEpisode.EpisodeNumber;
             episode.AbsoluteEpisodeNumber = oracleEpisode.AbsoluteEpisodeNumber;
             episode.Title = oracleEpisode.Title;
+            episode.AiredAfterSeasonNumber = oracleEpisode.AiredAfterSeasonNumber;
+            episode.AiredBeforeSeasonNumber = oracleEpisode.AiredBeforeSeasonNumber;
+            episode.AiredBeforeEpisodeNumber = oracleEpisode.AiredBeforeEpisodeNumber;
 
             episode.AirDate = oracleEpisode.AirDate;
             episode.AirDateUtc = oracleEpisode.AirDateUtc;
@@ -242,6 +255,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             if (status.Equals("ended", StringComparison.InvariantCultureIgnoreCase))
             {
                 return SeriesStatusType.Ended;
+            }
+
+            if (status.Equals("upcoming", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return SeriesStatusType.Upcoming;
             }
 
             return SeriesStatusType.Continuing;

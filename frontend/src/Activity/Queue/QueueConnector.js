@@ -18,13 +18,13 @@ function createMapStateToProps() {
     (state) => state.episodes,
     (state) => state.queue.options,
     (state) => state.queue.paged,
-    createCommandExecutingSelector(commandNames.CHECK_FOR_FINISHED_DOWNLOAD),
-    (episodes, options, queue, isCheckForFinishedDownloadExecuting) => {
+    createCommandExecutingSelector(commandNames.REFRESH_MONITORED_DOWNLOADS),
+    (episodes, options, queue, isRefreshMonitoredDownloadsExecuting) => {
       return {
         isEpisodesFetching: episodes.isFetching,
         isEpisodesPopulated: episodes.isPopulated,
         episodesError: episodes.error,
-        isCheckForFinishedDownloadExecuting,
+        isRefreshMonitoredDownloadsExecuting,
         ...options,
         ...queue
       };
@@ -129,7 +129,7 @@ class QueueConnector extends Component {
 
   onRefreshPress = () => {
     this.props.executeCommand({
-      name: commandNames.CHECK_FOR_FINISHED_DOWNLOAD
+      name: commandNames.REFRESH_MONITORED_DOWNLOADS
     });
   }
 
@@ -137,8 +137,8 @@ class QueueConnector extends Component {
     this.props.grabQueueItems({ ids });
   }
 
-  onRemoveSelectedPress = (ids, blacklist) => {
-    this.props.removeQueueItems({ ids, blacklist });
+  onRemoveSelectedPress = (payload) => {
+    this.props.removeQueueItems(payload);
   }
 
   //
